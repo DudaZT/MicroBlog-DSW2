@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+  <display-name>microblog</display-name>
+
+  <!-- Pool de conexões via JNDI (Tomcat context.xml) -->
+  <resource-ref>
+    <description>MySQL DataSource</description>
+    <res-ref-name>jdbc/microblog</res-ref-name>
+    <res-type>javax.sql.DataSource</res-type>
+    <res-auth>Container</res-auth>
+  </resource-ref>
+
+  <!-- Autenticação -->
+  <servlet>
+    <servlet-name>LoginController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.auth.LoginController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LoginController</servlet-name>
+    <url-pattern>/auth/login</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>LogoutController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.auth.LogoutController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>LogoutController</servlet-name>
+    <url-pattern>/auth/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CadastroController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.auth.CadastroController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CadastroController</servlet-name>
+    <url-pattern>/auth/cadastro</url-pattern>
+  </servlet-mapping>
+
+  <!-- Posts -->
+  <servlet>
+    <servlet-name>CriarPostController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.post.CriarPostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CriarPostController</servlet-name>
+    <url-pattern>/post/criar</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CurtirPostController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.post.CurtirPostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CurtirPostController</servlet-name>
+    <url-pattern>/post/curtir</url-pattern>
+  </servlet-mapping>
+
+  <!-- Feed -->
+  <servlet>
+    <servlet-name>FeedController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.feed.FeedController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FeedController</servlet-name>
+    <url-pattern>/feed</url-pattern>
+  </servlet-mapping>
+
+  <!-- Perfil -->
+  <servlet>
+    <servlet-name>PerfilController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.perfil.PerfilController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PerfilController</servlet-name>
+    <url-pattern>/perfil</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>EditarPerfilController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.perfil.EditarPerfilController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>EditarPerfilController</servlet-name>
+    <url-pattern>/perfil/editar</url-pattern>
+  </servlet-mapping>
+
+  <!-- Seguir -->
+  <servlet>
+    <servlet-name>SeguirController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.seguir.SeguirController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SeguirController</servlet-name>
+    <url-pattern>/seguir</url-pattern>
+  </servlet-mapping>
+
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>
