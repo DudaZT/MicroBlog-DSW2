@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// alterna o estado de seguir um usuário e redireciona ao perfil.
+// alterna o estado de seguir um usuário e redireciona ao perfil
 public class SeguirController extends HttpServlet {
 
     private final SeguidorService seguidorService = new SeguidorService();
@@ -29,15 +29,22 @@ public class SeguirController extends HttpServlet {
 
         String seguidoUsername = req.getParameter("username");
         String seguidoIdStr = req.getParameter("seguidoId");
+        String origem = req.getParameter("origem");
 
         try {
             int seguidoId = Integer.parseInt(seguidoIdStr);
             seguidorService.toggleSeguir(logado.getId(), seguidoId);
             
         } catch (NumberFormatException | ServiceException e) {
-            // ignora erros — redireciona de volta ao perfil
+            // ignora erros — redireciona de volta
         }
 
-        ViewHelper.redirect(req, res, "/perfil?username=" + seguidoUsername);
+        if ("feed".equals(origem)) {
+            ViewHelper.redirect(req, res, "/feed");
+        } else if ("seguindo".equals(origem)) {
+            ViewHelper.redirect(req, res, "/perfil/seguindo");
+        } else {
+            ViewHelper.redirect(req, res, "/perfil?username=" + seguidoUsername);
+        }
     }
 }

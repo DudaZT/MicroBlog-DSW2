@@ -1,6 +1,7 @@
 package edu.ifsp.microblog.controllers.post;
 
 import java.io.IOException;
+import java.util.Set;
 
 import edu.ifsp.microblog.modelo.Usuario;
 import edu.ifsp.microblog.service.PostService;
@@ -16,13 +17,15 @@ import jakarta.servlet.http.Part;
 
 // Cria um novo post (multipart para suportar upload de imagem )
 @MultipartConfig(
-    fileSizeThreshold = 1024 * 1024,       // 1 MB em memória
-    maxFileSize       = 5 * 1024 * 1024,   // 5 MB por arquivo
-    maxRequestSize    = 10 * 1024 * 1024   // 10 MB por requisição
+    fileSizeThreshold = 1024 * 1024, // 1 MB em memória
+    maxFileSize       = 5 * 1024 * 1024, // 5 MB por arquivo
+    maxRequestSize    = 10 * 1024 * 1024 // 10 MB por requisição
 )
 public class CriarPostController extends HttpServlet {
 
     private final PostService postService = new PostService();
+    
+    private static final Set<String> EXTENSOES_PERMITIDAS = Set.of("jpg", "jpeg", "png", "webp");
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -33,8 +36,40 @@ public class CriarPostController extends HttpServlet {
             return;
         }
 
-        String conteudo = req.getParameter("conteudo");
-        Part imagemPart = req.getPart("imagem");
+        String conteudo = null;
+        Part imagemPart = null;
+
+        try {
+            conteudo = req.getParameter("conteudo");
+            imagemPart = req.getPart("imagem");
+        } catch (IllegalStateException e) {
+            ViewHelper.redirectWithError(req, res, "/feed", 
+                "Arquivo muito grande! O tamanho máximo permitido é 5 MB.");
+            return;
+        } catch (Exception e) {
+            ViewHelper.redirectWithError(req, res, "/feed", 
+                "Erro ao processar o upload.");
+            return;
+        }
+
+        // Validação simples por extensão
+        if (imagemPart != null && imagemPart.getSize() > 0) {
+            String nomeArquivo = imagemPart.getSubmittedFileName();
+            
+            if (nomeArquivo == null || !nomeArquivo.contains(".")) {
+                ViewHelper.redirectWithError(req, res, "/feed", 
+                    "Arquivo inválido. Envie uma imagem JPG, PNG ou WebP.");
+                return;
+            }
+
+            String extensao = nomeArquivo.substring(nomeArquivo.lastIndexOf('.') + 1).toLowerCase();
+            
+            if (!EXTENSOES_PERMITIDAS.contains(extensao)) {
+                ViewHelper.redirectWithError(req, res, "/feed", 
+                    "Tipo de arquivo não aceito. Envie apenas imagens JPG, PNG ou WebP.");
+                return;
+            }
+        }
 
         try {
             postService.criarPost(logado, conteudo, imagemPart);

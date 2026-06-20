@@ -1,5 +1,7 @@
 package edu.ifsp.microblog.service;
 
+import java.util.List;
+
 import edu.ifsp.microblog.modelo.Usuario;
 import edu.ifsp.microblog.persistencia.UsuarioDAO;
 import edu.ifsp.microblog.util.HashUtil;
@@ -53,5 +55,9 @@ public class UsuarioService {
 
     public Usuario buscarPorId(int id) {
         return usuarioDAO.findById(id);
+    }
+
+    public List<Usuario> obterSugestoesSeguir(int usuarioId, int limit) {
+        return usuarioDAO.findSugestoesSeguir(usuarioId, limit);
     }
 }

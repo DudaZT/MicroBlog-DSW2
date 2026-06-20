@@ -9,9 +9,7 @@ import java.util.List;
 
 import edu.ifsp.microblog.modelo.Usuario;
 
-/**
- * Acesso a dados da tabela seguidor.
- */
+// Acesso a dados da tabela seguidor.
 public class SeguidorDAO {
 
     public boolean isSeguindo(int seguidorId, int seguidoId) {

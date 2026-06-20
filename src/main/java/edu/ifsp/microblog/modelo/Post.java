@@ -6,9 +6,9 @@ public class Post {
 
     private int id;
     private Usuario autor;
-    private String conteudo;    // máx. 280 caracteres
-    private String imagem;      // caminho relativo
-    private String imagemMd5;   // MD5 da imagem para deduplicação
+    private String conteudo; // máx. 280 caracteres
+    private String imagem; // caminho relativo
+    private String imagemMd5; // MD5 da imagem para deduplicação
     private LocalDateTime dtCriacao;
 
     public int getId() { 

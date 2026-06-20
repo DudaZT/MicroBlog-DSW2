@@ -40,7 +40,7 @@ public class PostService {
                 String caminho = UploadUtil.salvar(imagemPart, ext);
                 post.setImagem(caminho);
                 
-                // O MD5 do arquivo já é o próprio nome; extraímos a parte antes do "."
+                // O MD5 do arquivo já é o próprio nome
                 post.setImagemMd5(caminho.contains(".") ? caminho.substring(0, caminho.lastIndexOf('.')) : caminho);
                 
             } catch (IOException e) {
@@ -91,5 +91,18 @@ public class PostService {
 
     public boolean isCurtido(int usuarioId, int postId) {
         return curtidaDAO.exists(usuarioId, postId);
+    }
+    
+    public void excluirPost(int postId, int usuarioId) {
+        Post post = postDAO.findById(postId);
+        
+        if (post == null) {
+            throw new ServiceException("Post não encontrado.");
+        }
+        if (post.getAutor().getId() != usuarioId) {
+            throw new ServiceException("Você não pode excluir um post que não é seu.");
+        }
+        
+        postDAO.delete(postId);
     }
 }

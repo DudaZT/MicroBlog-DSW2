@@ -1,6 +1,8 @@
 package edu.ifsp.microblog.service;
 
 import edu.ifsp.microblog.persistencia.SeguidorDAO;
+import java.util.List;
+import edu.ifsp.microblog.modelo.Usuario;
 
 // seguir/deixar de seguir usuários.
 public class SeguidorService {
@@ -36,5 +38,9 @@ public class SeguidorService {
 
     public int countSeguindo(int usuarioId) {
         return seguidorDAO.countSeguindo(usuarioId);
+    }
+    
+    public List<Usuario> listarSeguindo(int usuarioId) {
+        return seguidorDAO.findSeguindo(usuarioId);
     }
 }

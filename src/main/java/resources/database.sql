@@ -50,22 +50,22 @@ CREATE TABLE seguidor (
 );
 
 
--- Senhas: todos usam "senha123" (SHA-256 = a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3)
+-- Senhas: todos usam "123" (SHA-256 = a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3)
 INSERT INTO usuario (id, username, email, senha_hash, nome, bio) VALUES
-(1, 'joao',  'joao@gmail.com',  'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'João Silva',   'Desenvolvedor Java apaixonado por café.'),
-(2, 'maria', 'maria@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Maria Souza',  'Estudante de Ciência da Computação.'),
-(3, 'pedro', 'pedro@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Pedro Alves',  'Fotógrafo e entusiasta de tecnologia.');
+(1, 'roberto',  'roberto@gmail.com',  'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Roberto Silva',   'Desenvolvedor Java.'),
+(2, 'maria', 'maria@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Maria Souza',  'Estudante de ADS.'),
+(3, 'pedro', 'pedro@gmail.com', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 'Pedro Alves',  'entusiasta de tecnologia.');
 
 INSERT INTO post (id, usuario_id, conteudo) VALUES
-(1, 1, 'Olá mundo! Meu primeiro post no microblog.'),
-(2, 1, 'Cafézinho de manhã, não tem coisa melhor.'),
+(1, 1, 'Meu primeiro post no microblog.'),
+(2, 1, 'Obrigada a todos pelo apoio!'),
 (3, 2, 'Estudando hoje, OFF!'),
 (4, 3, 'Bom dia a todos! Que dia lindo para codar.');
 
 INSERT INTO seguidor (seguidor_id, seguido_id) VALUES
-(2, 1),  -- maria segue joao
-(3, 1),  -- pedro segue joao
-(1, 2);  -- joao segue maria
+(2, 1),  -- maria segue roberto
+(3, 1),  -- pedro segue roberto
+(1, 2);  -- roberto segue maria
 
 INSERT INTO curtida (usuario_id, post_id) VALUES
 (2, 1),

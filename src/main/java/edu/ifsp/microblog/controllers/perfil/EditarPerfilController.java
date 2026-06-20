@@ -19,8 +19,8 @@ import jakarta.servlet.http.Part;
 
 @MultipartConfig(
     fileSizeThreshold = 1024 * 1024,
-    maxFileSize       = 3 * 1024 * 1024,
-    maxRequestSize    = 5 * 1024 * 1024
+    maxFileSize = 3 * 1024 * 1024,
+    maxRequestSize = 5 * 1024 * 1024
 )
 public class EditarPerfilController extends HttpServlet {
 
@@ -51,8 +51,8 @@ public class EditarPerfilController extends HttpServlet {
         }
 
         String nome = req.getParameter("nome");
-        String bio  = req.getParameter("bio");
-        Part   foto = req.getPart("fotoPerfil");
+        String bio = req.getParameter("bio");
+        Part foto = req.getPart("fotoPerfil");
 
         logado.setNome(nome);
         logado.setBio(bio);
@@ -60,7 +60,7 @@ public class EditarPerfilController extends HttpServlet {
         // Upload de nova foto (opcional)
         if (foto != null && foto.getSize() > 0) {
             try {
-                String ext    = UploadUtil.extrairExtensao(foto);
+                String ext = UploadUtil.extrairExtensao(foto);
                 String caminho = UploadUtil.salvar(foto, ext);
                 logado.setFotoPerfil(caminho);
                 logado.setFotoMd5(caminho.contains(".") ? caminho.substring(0, caminho.lastIndexOf('.')) : caminho);
@@ -79,6 +79,7 @@ public class EditarPerfilController extends HttpServlet {
             // Atualiza o objeto da sessão
             Auth.login(req, logado);
             ViewHelper.redirectWithSuccess(req, res, "/perfil", "Perfil atualizado com sucesso!");
+            
         } catch (ServiceException e) {
             req.setAttribute("erro", e.getMessage());
             req.setAttribute("usuario", logado);

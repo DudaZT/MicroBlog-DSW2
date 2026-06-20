@@ -7,11 +7,11 @@ public class Usuario {
     private int id;
     private String username;
     private String email;
-    private String senhaHash;   // SHA-256 hex
+    private String senhaHash; // SHA-256 hex
     private String nome;
     private String bio;
-    private String fotoPerfil;  // caminho relativo no servidor
-    private String fotoMd5;     // MD5 da foto
+    private String fotoPerfil; // caminho relativo no servidor
+    private String fotoMd5; // MD5 da foto
     private LocalDateTime dtCriacao;
 
     public int getId() { 

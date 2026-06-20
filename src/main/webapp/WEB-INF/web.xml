@@ -60,6 +60,16 @@
     <servlet-name>CurtirPostController</servlet-name>
     <url-pattern>/post/curtir</url-pattern>
   </servlet-mapping>
+  
+    <!-- Excluir Post -->
+  <servlet>
+    <servlet-name>ExcluirPostController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.post.ExcluirPostController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ExcluirPostController</servlet-name>
+    <url-pattern>/post/excluir</url-pattern>
+  </servlet-mapping>
 
   <!-- Feed -->
   <servlet>
@@ -98,6 +108,25 @@
   <servlet-mapping>
     <servlet-name>SeguirController</servlet-name>
     <url-pattern>/seguir</url-pattern>
+  </servlet-mapping>
+
+  <!-- Uploads (fotos de perfil e imagens de posts) -->
+  <servlet>
+    <servlet-name>UploadController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.upload.UploadController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UploadController</servlet-name>
+    <url-pattern>/uploads/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>SeguindoController</servlet-name>
+    <servlet-class>edu.ifsp.microblog.controllers.perfil.SeguindoController</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SeguindoController</servlet-name>
+    <url-pattern>/perfil/seguindo</url-pattern>
   </servlet-mapping>
 
   <welcome-file-list>

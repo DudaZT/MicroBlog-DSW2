@@ -16,7 +16,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
 // exibe o perfil de um usuário
 // Aba "posts" ou aba "curtidas" controlada pelo parâmetro "aba"
 public class PerfilController extends HttpServlet {
@@ -52,13 +51,13 @@ public class PerfilController extends HttpServlet {
         int page = Paginacao.parsePage(req.getParameter("page"));
 
         List<Post> posts;
-        Paginacao  paginacao;
+        Paginacao paginacao;
 
         if ("curtidas".equals(aba)) {
-            posts     = postService.getPostsCurtidosPaged(perfil.getId(), page);
+            posts = postService.getPostsCurtidosPaged(perfil.getId(), page);
             paginacao = postService.getPaginacaoPerfil(perfil.getId(), page); // aprox.
         } else {
-            posts     = postService.getPostsPerfilPaged(perfil.getId(), page);
+            posts = postService.getPostsPerfilPaged(perfil.getId(), page);
             paginacao = postService.getPaginacaoPerfil(perfil.getId(), page);
         }
 
@@ -67,6 +66,17 @@ public class PerfilController extends HttpServlet {
         int seguindo = seguidorService.countSeguindo(perfil.getId());
         boolean isProprioUser = logado.getId() == perfil.getId();
 
+        java.util.Map<Integer, Integer> curtidasPorPost = new java.util.HashMap<>();
+        java.util.Set<Integer> postsCurtidos = new java.util.HashSet<>();
+        
+        for (Post p : posts) {
+            curtidasPorPost.put(p.getId(), postService.contarCurtidas(p.getId()));
+            
+            if (postService.isCurtido(logado.getId(), p.getId())) {
+                postsCurtidos.add(p.getId());
+            }
+        }
+        
         req.setAttribute("perfil", perfil);
         req.setAttribute("posts", posts);
         req.setAttribute("paginacao", paginacao);
@@ -75,6 +85,8 @@ public class PerfilController extends HttpServlet {
         req.setAttribute("seguidores", seguidores);
         req.setAttribute("seguindo", seguindo);
         req.setAttribute("isProprioUser", isProprioUser);
+        req.setAttribute("curtidasPorPost", curtidasPorPost);
+        req.setAttribute("postsCurtidos", postsCurtidos);
 
         ViewHelper.forward(req, res, "perfil/perfil");
     }

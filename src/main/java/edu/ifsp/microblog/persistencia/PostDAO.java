@@ -180,13 +180,48 @@ public class PostDAO {
     }
 
     public void delete(int postId) {
-        String sql = "DELETE FROM post WHERE id = ?";
+        String deleteCurtidas = "DELETE FROM curtida WHERE post_id = ?";
+        String deletePost = "DELETE FROM post WHERE id = ?";
         
-        try (Connection conn = DatabaseConnector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, postId);
-            ps.executeUpdate();
+        try (Connection conn = DatabaseConnector.getConnection()) {
+            conn.setAutoCommit(false); // Inicia transação
+            
+            try {
+                // 1. Primeiro remove as curtidas do post
+                try (PreparedStatement ps = conn.prepareStatement(deleteCurtidas)) {
+                    ps.setInt(1, postId);
+                    ps.executeUpdate();
+                }
+                
+                // 2. Depois remove o post
+                try (PreparedStatement ps = conn.prepareStatement(deletePost)) {
+                    ps.setInt(1, postId);
+                    ps.executeUpdate();
+                }
+                
+                conn.commit(); // Confirma a transação
+                
+            } catch (SQLException e) {
+                conn.rollback(); // Desfaz em caso de erro
+                throw e;
+            }
+            
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
+    }
+
+    public Post findById(int id) {
+        String sql = SELECT_BASE + "WHERE p.id = ?";
+        try (Connection conn = DatabaseConnector.getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return mapRow(rs);
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
+        }
+        return null;
     }
 }

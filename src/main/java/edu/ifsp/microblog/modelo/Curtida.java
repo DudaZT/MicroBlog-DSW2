@@ -2,9 +2,7 @@ package edu.ifsp.microblog.modelo;
 
 import java.time.LocalDateTime;
 
-/**
- * Representa uma curtida de um usuário em um post.
- */
+// Representa uma curtida de um usuário em um post.
 public class Curtida {
 
     private int usuarioId;

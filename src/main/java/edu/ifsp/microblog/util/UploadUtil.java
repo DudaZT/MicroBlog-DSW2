@@ -54,6 +54,8 @@ public class UploadUtil {
     public static String extrairExtensao(Part part) {
         String header = part.getHeader("content-disposition");
         
+        	
+        
         if (header == null) return "jpg";
         
         for (String token : header.split(";")) {

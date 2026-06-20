@@ -6,12 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.ifsp.microblog.modelo.Usuario;
 
-/**
- * Acesso a dados da entidade Usuario.
- */
+
+// Acesso a dados da entidade Usuario.
 
 public class UsuarioDAO {
 
@@ -93,9 +94,7 @@ public class UsuarioDAO {
 
     // operações
 
-    /**
-     * Insere um novo usuário.
-     */
+    // Insere um novo usuário.
     public Usuario save(Usuario usuario) {
         String sql = "INSERT INTO usuario (username, email, senha_hash, nome, bio, foto_perfil, foto_md5, dt_criacao) "
                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -147,5 +146,23 @@ public class UsuarioDAO {
         } catch (SQLException e) {
             throw new DataAccessException(e);
         }
+    }
+
+    public List<Usuario> findSugestoesSeguir(int usuarioId, int limit) {
+        String sql = "SELECT * FROM usuario WHERE id != ? AND id NOT IN (SELECT seguido_id FROM seguidor WHERE seguidor_id = ?) ORDER BY RAND() LIMIT ?";
+        List<Usuario> lista = new ArrayList<>();
+        try (Connection conn = DatabaseConnector.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, usuarioId);
+            ps.setInt(2, usuarioId);
+            ps.setInt(3, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapRow(rs));
+                }
+            }
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
+        }
+        return lista;
     }
 }

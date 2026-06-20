@@ -8,10 +8,8 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-/**
- * Fornece conexões JDBC via pool configurado no Tomcat (JNDI).
- * O pool é definido em META-INF/context.xml com o nome "jdbc/microblog".
- */
+// Fornece conexões JDBC via pool configurado no Tomcat (JNDI).
+// O pool é definido em META-INF/context.xml com o nome "jdbc/microblog"
 public class DatabaseConnector {
 
     private static DataSource dataSource;
@@ -28,9 +26,7 @@ public class DatabaseConnector {
 
     private DatabaseConnector() {}
 
-    /**
-     * Retorna uma conexão do pool.
-     */
+    // Retorna uma conexão do pool
     public static Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
